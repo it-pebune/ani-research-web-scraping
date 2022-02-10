@@ -12,11 +12,26 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     logging.info('Python HTTP trigger function processed a request.')
     
-    result_list = []
+    
+    # cam = 1 - get senators
+    # cam = 2 - get deputies
+    # cam = 3 - get all members
 
-    rooms = [1,2]
-    for r in rooms:
-        link = "http://www.cdep.ro/pls/parlam/structura2015.de?leg=2020&cam={}".format(r)
+    cam = req.params.get('cam')
+    leg = req.params.get('leg')
+    
+    if not leg:
+        leg = "2020"
+    cam_dict = {"1":("get senators",["1",]), "2":("get deputies",["2",]), "3":("get all members",["1","2"])}
+
+    if not cam:
+        cam = "3"
+
+    result_list = []
+    cam_set = cam_dict[cam]
+
+    for r in cam_set[1]:
+        link = "http://www.cdep.ro/pls/parlam/structura2015.de?leg={}&cam={}".format(leg, r)
         req = requests.get(link)
         http_encoding = req.encoding if 'charset' in req.headers.get('content-type', '').lower() else None
         html_encoding = EncodingDetector.find_declared_encoding(req.content, is_html=True)
@@ -37,7 +52,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             else:
                 to_append['room'] = "cdep"
             result_list.append(to_append) 
-    return func.HttpResponse(json.dumps(result_list),mimetype="application/json")
+        final_dict = {"action":cam_set[0], "leg": leg, "results": result_list}
+    return func.HttpResponse(json.dumps(final_dict),mimetype="application/json")
 
  #   if name:
  #       return func.HttpResponse(json.dumps(result_list),mimetype="application/json")
