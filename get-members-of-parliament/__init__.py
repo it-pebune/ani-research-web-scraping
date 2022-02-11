@@ -54,11 +54,3 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             result_list.append(to_append) 
         final_dict = {"action":cam_set[0], "leg": leg, "results": result_list}
     return func.HttpResponse(json.dumps(final_dict),mimetype="application/json")
-
- #   if name:
- #       return func.HttpResponse(json.dumps(result_list),mimetype="application/json")
- #   else:
- #       return func.HttpResponse(
- #            "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
- #            status_code=200
- #       )
