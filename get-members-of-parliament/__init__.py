@@ -51,6 +51,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 to_append['room'] = "senat"
             else:
                 to_append['room'] = "cdep"
+            profile_url = "http://www.cdep.ro" + entries[0]['href']
+            to_append['link'] = profile_url
+            member_id = profile_url.split("idm=")[1].split("&")[0]
+            to_append['id'] = "{}-{}-{}".format(r,leg, member_id)
             result_list.append(to_append) 
         final_dict = {"action":cam_set[0], "leg": leg, "results": result_list}
     return func.HttpResponse(json.dumps(final_dict),mimetype="application/json")
