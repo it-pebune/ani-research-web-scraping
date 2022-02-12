@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "00362394-3554-4a78-9da6-968f12e9b622",
+		"name": "Web Scraping API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Parliament",
+			"item": [
+				{
+					"name": "Members",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/get-members-of-parliament",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"get-members-of-parliament"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deputies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/get-members-of-parliament?cam=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"get-members-of-parliament"
+							],
+							"query": [
+								{
+									"key": "cam",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Senators",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/get-members-of-parliament?cam=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"get-members-of-parliament"
+							],
+							"query": [
+								{
+									"key": "cam",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Member details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/get-member-of-parliament-details?leg=2020&cam=2&id=136",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"get-member-of-parliament-details"
+							],
+							"query": [
+								{
+									"key": "leg",
+									"value": "2020"
+								},
+								{
+									"key": "cam",
+									"value": "2"
+								},
+								{
+									"key": "id",
+									"value": "136"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Asset and Interest",
+			"item": [
+				{
+					"name": "Declarations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/get-asset-and-interest-declarations?nume_prenume=Halici Nicusor",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"get-asset-and-interest-declarations"
+							],
+							"query": [
+								{
+									"key": "nume_prenume",
+									"value": "Halici Nicusor"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
