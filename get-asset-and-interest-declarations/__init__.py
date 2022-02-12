@@ -38,7 +38,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         icewindow = rsoup.find("input",attrs = {"name":"ice.window"}).get('value')
         iceview = rsoup.find("input",attrs = {"name":"ice.view"}).get('value')
 
-        #"javax.faces.ViewState": "4245233471771593698:6518568305726889451" asta ma oprea
 
         data = {"form": "form",
             "form:searchField_input": "numePrenume",
