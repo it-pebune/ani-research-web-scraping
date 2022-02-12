@@ -12,15 +12,17 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     
 
     member_id = req.params.get('id')
+    cam = req.params.get('cam')
+    leg = req.params.get('leg')
     
-    if not member_id:
+    if not all([member_id, cam, leg]):
         return func.HttpResponse(
-             "Please enter a value for id parameter",
+             "Please enter values for id , cam , leg, parameters",
              status_code=200
         )
     
-    id_elements = member_id.split("-")
-    link = "http://www.cdep.ro/pls/parlam/structura2015.mp?idm={}&cam={}&leg={}".format(id_elements[2],id_elements[0], id_elements[1])
+
+    link = "http://www.cdep.ro/pls/parlam/structura2015.mp?idm={}&cam={}&leg={}".format(member_id,cam, leg)
     
     req = requests.get(link)
     http_encoding = req.encoding if 'charset' in req.headers.get('content-type', '').lower() else None
