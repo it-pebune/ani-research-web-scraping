@@ -15,7 +15,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     
     # cam = 1 - get senators
     # cam = 2 - get deputies
-    # cam = 3 - get all members
+    # cam = 3 - get all members 
 
     cam = req.params.get('cam')
     leg = req.params.get('leg')
