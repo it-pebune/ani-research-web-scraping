@@ -39,7 +39,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         soup = BeautifulSoup(req.content, "lxml",from_encoding=encoding)
         rows = soup.find('tbody').findAll("tr")
         for row in rows:
-            to_append = {}
+			to_append = {}
             entries = row.findAll("a")
             to_append['name'] = entries[0].text
             try:  
@@ -51,6 +51,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 to_append['room'] = "senat"
             else:
                 to_append['room'] = "cdep"
+            profile_url = "http://www.cdep.ro" + entries[0]['href']
+            to_append['link'] = profile_url
+            member_id = profile_url.split("idm=")[1].split("&")[0]
+            to_append['id'] = "{}-{}-{}".format(r,leg, member_id)
             result_list.append(to_append) 
         final_dict = {"action":cam_set[0], "leg": leg, "results": result_list}
     return func.HttpResponse(json.dumps(final_dict),mimetype="application/json")
