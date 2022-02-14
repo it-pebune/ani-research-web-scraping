@@ -14,12 +14,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/parliament-members",
+							"raw": "{{base_url}}/parliament/members",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"parliament-members"
+								"parliament",
+								"members"
 							]
 						}
 					},
@@ -31,12 +32,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/parliament-members?cam=2",
+							"raw": "{{base_url}}/parliament/members?cam=2",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"parliament-members"
+								"parliament",
+								"members"
 							],
 							"query": [
 								{
@@ -54,12 +56,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/parliament-members?cam=1",
+							"raw": "{{base_url}}/parliament/members?cam=1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"parliament-members"
+								"parliament",
+								"members"
 							],
 							"query": [
 								{
@@ -77,12 +80,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/parliament-member-details?leg=2020&cam=2&id=136",
+							"raw": "{{base_url}}/parliament/member/details?leg=2020&cam=2&id=136",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"parliament-member-details"
+								"parliament",
+								"member",
+								"details"
 							],
 							"query": [
 								{
@@ -113,12 +118,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/asset-and-interest-declarations?nume_prenume=Halici Nicusor",
+							"raw": "{{base_url}}/declarations?nume_prenume=Halici Nicusor",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"asset-and-interest-declarations"
+								"declarations"
 							],
 							"query": [
 								{
