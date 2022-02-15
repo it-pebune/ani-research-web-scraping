@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "00362394-3554-4a78-9da6-968f12e9b622",
+		"_postman_id": "ad380fe9-91bc-4b31-8cd7-a6a2ca078bc0",
 		"name": "Web Scraping API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,12 +14,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/get-members-of-parliament",
+							"raw": "{{base_url}}/parliament/members",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"get-members-of-parliament"
+								"parliament",
+								"members"
 							]
 						}
 					},
@@ -31,12 +32,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/get-members-of-parliament?cam=2",
+							"raw": "{{base_url}}/parliament/members?cam=2",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"get-members-of-parliament"
+								"parliament",
+								"members"
 							],
 							"query": [
 								{
@@ -54,12 +56,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/get-members-of-parliament?cam=1",
+							"raw": "{{base_url}}/parliament/members?cam=1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"get-members-of-parliament"
+								"parliament",
+								"members"
 							],
 							"query": [
 								{
@@ -77,12 +80,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/get-member-of-parliament-details?leg=2020&cam=2&id=136",
+							"raw": "{{base_url}}/parliament/member/details?leg=2020&cam=2&id=136",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"get-member-of-parliament-details"
+								"parliament",
+								"member",
+								"details"
 							],
 							"query": [
 								{
@@ -113,12 +118,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/get-asset-and-interest-declarations?nume_prenume=Halici Nicusor",
+							"raw": "{{base_url}}/declarations?nume_prenume=Halici Nicusor",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"get-asset-and-interest-declarations"
+								"declarations"
 							],
 							"query": [
 								{
