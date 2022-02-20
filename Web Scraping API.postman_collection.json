@@ -10,6 +10,25 @@
 			"item": [
 				{
 					"name": "Members",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get all members of the parliament\", function() {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"    ",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"room\\\": \\\"senat\\\"\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"room\\\": \\\"cdep\\\"\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -28,6 +47,25 @@
 				},
 				{
 					"name": "Deputies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get all deputies\", function() {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"",
+									"    pm.expect(pm.response.text()).to.not.include(\"\\\"room\\\": \\\"senat\\\"\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"room\\\": \\\"cdep\\\"\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -52,6 +90,25 @@
 				},
 				{
 					"name": "Senators",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get all senators\", function() {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"room\\\": \\\"senat\\\"\");",
+									"    pm.expect(pm.response.text()).to.not.include(\"\\\"room\\\": \\\"cdep\\\"\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -76,6 +133,24 @@
 				},
 				{
 					"name": "Member details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get details about a member of the parliament\", function() {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"name\\\": \\\"Halici Nicusor\\\"\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -114,6 +189,24 @@
 			"item": [
 				{
 					"name": "Declarations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get all asset and interest declarations of a subject\", function() {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"nume\\\": \\\"HALICI I NICUSOR\\\"\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
