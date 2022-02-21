@@ -20,8 +20,8 @@
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
 									"    ",
-									"    pm.expect(pm.response.text()).to.include(\"\\\"room\\\": \\\"senat\\\"\");",
-									"    pm.expect(pm.response.text()).to.include(\"\\\"room\\\": \\\"cdep\\\"\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": \\\"senat\\\"\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": \\\"cdep\\\"\");",
 									"});",
 									""
 								],
@@ -33,13 +33,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/parliament/members",
+							"raw": "{{base_url}}/mps",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"parliament",
-								"members"
+								"mps"
 							]
 						}
 					},
@@ -57,8 +56,8 @@
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
 									"",
-									"    pm.expect(pm.response.text()).to.not.include(\"\\\"room\\\": \\\"senat\\\"\");",
-									"    pm.expect(pm.response.text()).to.include(\"\\\"room\\\": \\\"cdep\\\"\");",
+									"    pm.expect(pm.response.text()).to.not.include(\"\\\"chamber\\\": \\\"senat\\\"\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": \\\"cdep\\\"\");",
 									"});",
 									""
 								],
@@ -70,17 +69,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/parliament/members?cam=2",
+							"raw": "{{base_url}}/mps?cham=2",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"parliament",
-								"members"
+								"mps"
 							],
 							"query": [
 								{
-									"key": "cam",
+									"key": "cham",
 									"value": "2"
 								}
 							]
@@ -100,8 +98,8 @@
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
 									"",
-									"    pm.expect(pm.response.text()).to.include(\"\\\"room\\\": \\\"senat\\\"\");",
-									"    pm.expect(pm.response.text()).to.not.include(\"\\\"room\\\": \\\"cdep\\\"\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": \\\"senat\\\"\");",
+									"    pm.expect(pm.response.text()).to.not.include(\"\\\"chamber\\\": \\\"cdep\\\"\");",
 									"});",
 									""
 								],
@@ -113,17 +111,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/parliament/members?cam=1",
+							"raw": "{{base_url}}/mps?cham=1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"parliament",
-								"members"
+								"mps"
 							],
 							"query": [
 								{
-									"key": "cam",
+									"key": "cham",
 									"value": "1"
 								}
 							]
@@ -155,14 +152,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/parliament/member/details?leg=2020&cam=2&id=136",
+							"raw": "{{base_url}}/mp?leg=2020&cham=2&id=136",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"parliament",
-								"member",
-								"details"
+								"mp"
 							],
 							"query": [
 								{
@@ -170,7 +165,7 @@
 									"value": "2020"
 								},
 								{
-									"key": "cam",
+									"key": "cham",
 									"value": "2"
 								},
 								{
@@ -199,7 +194,7 @@
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
 									"",
-									"    pm.expect(pm.response.text()).to.include(\"\\\"nume\\\": \\\"HALICI I NICUSOR\\\"\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"name\\\": \\\"HALICI I NICUSOR\\\"\");",
 									"});",
 									""
 								],
@@ -211,16 +206,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/declarations?nume_prenume=Halici Nicusor",
+							"raw": "{{base_url}}/decls?name=Halici Nicusor",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"declarations"
+								"decls"
 							],
 							"query": [
 								{
-									"key": "nume_prenume",
+									"key": "name",
 									"value": "Halici Nicusor"
 								}
 							]

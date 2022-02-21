@@ -11,40 +11,30 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     from bs4 import BeautifulSoup
     from bs4.dammit import EncodingDetector
 
-    # cam = 1 - get senators
-    # cam = 2 - get deputies
-    # cam = 3 - get all members
+    legislature = req.params.get("leg")
+    # cham = 1 (get senators)
+    # cham = 2 (get deputies)
+    # cham = 3 (get all members)
+    chamber = req.params.get("cham")
 
-    cam = req.params.get("cam")
-    leg = req.params.get("leg")
+    if not legislature:
+        legislature = "2020"
+    if not chamber:
+        chamber = "3"
 
-    if not leg:
-        leg = "2020"
-    cam_dict = {
-        "1": (
-            "get senators",
-            [
-                "1",
-            ],
-        ),
-        "2": (
-            "get deputies",
-            [
-                "2",
-            ],
-        ),
+    chamber_dict = {
+        "1": ("get senators", ["1"]),
+        "2": ("get deputies", ["2"]),
         "3": ("get all members", ["1", "2"]),
     }
 
-    if not cam:
-        cam = "3"
-
     result_list = []
-    cam_set = cam_dict[cam]
 
-    for r in cam_set[1]:
+    chamber_set = chamber_dict[chamber]
+
+    for chamber in chamber_set[1]:
         link = "http://www.cdep.ro/pls/parlam/structura2015.de?leg={}&cam={}".format(
-            leg, r
+            legislature, chamber
         )
         req = requests.get(link)
         http_encoding = (
@@ -67,15 +57,19 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 to_append["location"] = entries[1].text.split("/")[1].strip()
             except IndexError:
                 to_append["party"] = entries[1].text
-            if r == "1":
-                to_append["room"] = "senat"
+            to_append["legislature"] = legislature
+            if chamber == "1":
+                to_append["chamber"] = "senat"
             else:
-                to_append["room"] = "cdep"
+                to_append["chamber"] = "cdep"
             profile_url = "http://www.cdep.ro" + entries[0]["href"]
-            to_append["link"] = profile_url
             member_id = profile_url.split("idm=")[1].split("&")[0]
-            to_append["leg"] = leg
             to_append["id"] = member_id
+            to_append["link"] = profile_url
             result_list.append(to_append)
-        final_dict = {"action": cam_set[0], "leg": leg, "results": result_list}
+        final_dict = {
+            "action": chamber_set[0],
+            "legislature": legislature,
+            "results": result_list,
+        }
     return func.HttpResponse(json.dumps(final_dict), mimetype="application/json")

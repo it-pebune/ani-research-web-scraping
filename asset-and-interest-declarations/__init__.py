@@ -11,9 +11,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     import json
     from bs4 import BeautifulSoup
 
-    nume_prenume = req.params.get("nume_prenume")
+    lastname_firstname = req.params.get("name")
 
-    if nume_prenume:
+    if lastname_firstname:
         result_list = []
 
         headers = {
@@ -69,7 +69,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             "javax.faces.partial.ajax": "true",
         }
 
-        data["form:searchKey_input"] = nume_prenume
+        data["form:searchKey_input"] = lastname_firstname
         data["javax.faces.ViewState"] = vstate
         data["javax.faces.ClientWindow"] = cwindow
         data["ice.window"] = icewindow
@@ -109,13 +109,13 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 to_append = {}
                 for idx, val in enumerate(
                     [
-                        "nume",
-                        "institutie",
-                        "functie",
-                        "localitate",
-                        "judet",
-                        "data",
-                        "declaratie",
+                        "name",
+                        "institution",
+                        "function",
+                        "locality",
+                        "county",
+                        "date",
+                        "declaration",
                     ]
                 ):
                     to_append[val] = tds[idx].text
@@ -127,4 +127,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             time.sleep(1)
         return func.HttpResponse(json.dumps(result_list), mimetype="application/json")
     else:
-        return func.HttpResponse("Am nevoie de un nume.", status_code=200)
+        return func.HttpResponse(
+            "Please enter a value for 'name' (last name and first name) parameter, "
+            + "e.g. lastname_firstname=Ionescu Marian",
+            status_code=406,
+        )
