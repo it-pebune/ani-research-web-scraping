@@ -30,10 +30,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             "Referer": "http://declaratii.integritate.eu/",
         }
 
+        # GET request to main page to collect elements needed for POST
         link = "http://declaratii.integritate.eu/index.html"
-
         session = requests.Session()
-
         resp_req = session.get(link)
         rsoup = BeautifulSoup(resp_req.content, "lxml")
         vstate = rsoup.find("input", attrs={"name": "javax.faces.ViewState"}).get(
@@ -44,7 +43,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         )
         icewindow = rsoup.find("input", attrs={"name": "ice.window"}).get("value")
         iceview = rsoup.find("input", attrs={"name": "ice.view"}).get("value")
-
+        
+        # prepare POST data
         data = {
             "form": "form",
             "form:searchField_input": "numePrenume",
@@ -68,16 +68,33 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             "javax.faces.partial.event": "click",
             "javax.faces.partial.ajax": "true",
         }
-
         data["form:searchKey_input"] = lastname_firstname
         data["javax.faces.ViewState"] = vstate
         data["javax.faces.ClientWindow"] = cwindow
         data["ice.window"] = icewindow
         data["ice.view"] = iceview
 
+        # POST request
         resp = session.post(link, headers=headers, data=data)
         soup = BeautifulSoup(resp.content, "lxml")
 
+        # if no results, return error message
+        no_results = soup.find("h5", text = "Nu s-au găsit rezultate")
+        if no_results:
+            return func.HttpResponse(
+                "No results found",
+                status_code=406
+            )
+        
+        # if too many results, return error message
+        too_many_results = soup.find("span", attrs = {"id": "_t133"})
+        if too_many_results:
+            return func.HttpResponse(
+                "More than 10 000 results found",
+                status_code=406
+            )
+
+        # Prepare POST data for looping through results page
         data["form:resultsTable"] = "form:resultsTable"
         data["form:resultsTable_paging"] = "true"
         data["form:resultsTable_rows"] = "100"
@@ -96,6 +113,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         added = 0
         page = 1
 
+        # looping thorugh result pages and appending data for each result
         while added < results:
             data["form:resultsTable_page"] = page
             resp = session.post(link, headers=headers, data=data)
