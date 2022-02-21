@@ -17,6 +17,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     # cham = 3 (get all members)
     chamber = req.params.get("cham")
 
+    # set default values for parameters
     if not legislature:
         legislature = "2020"
     if not chamber:
@@ -30,13 +31,29 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     result_list = []
 
-    chamber_set = chamber_dict[chamber]
-
+    try:
+        chamber_set = chamber_dict[chamber]   
+    except KeyError:
+        # handle wrong chamber exception
+        return func.HttpResponse(
+            "cham (chamber) can only be 1, 2 or 3",
+            status_code=406
+        )       
+    
     for chamber in chamber_set[1]:
         link = "http://www.cdep.ro/pls/parlam/structura2015.de?leg={}&cam={}".format(
             legislature, chamber
         )
         req = requests.get(link)
+
+        # handle wrong legislature value
+        if req.status_code == 404:
+            return func.HttpResponse(
+                "please enter a correct year value for leg (legislature)",
+                status_code=406
+            )                  
+
+        # get the right encoding
         http_encoding = (
             req.encoding
             if "charset" in req.headers.get("content-type", "").lower()
@@ -46,6 +63,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             req.content, is_html=True
         )
         encoding = html_encoding or http_encoding
+        
         soup = BeautifulSoup(req.content, "lxml", from_encoding=encoding)
         rows = soup.find("tbody").findAll("tr")
         for row in rows:
