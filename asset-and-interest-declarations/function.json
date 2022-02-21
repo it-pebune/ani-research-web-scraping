@@ -7,7 +7,7 @@
       "direction": "in",
       "name": "req",
       "methods": ["get"],
-      "route": "declarations"
+      "route": "decls"
     },
     {
       "type": "http",

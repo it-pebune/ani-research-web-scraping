@@ -7,7 +7,7 @@
       "direction": "in",
       "name": "req",
       "methods": ["get"],
-      "route": "parliament/member/details"
+      "route": "mp"
     },
     {
       "type": "http",
