@@ -11,11 +11,11 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     from bs4 import BeautifulSoup
     from bs4.dammit import EncodingDetector
 
-    legislature = req.params.get("leg")
-    # cham = 1 (get senators)
-    # cham = 2 (get deputies)
-    # cham = 3 (get all members)
-    chamber = req.params.get("cham")
+    legislature = req.params.get("legislature")
+    # chamber = 1 (get senators)
+    # chamber = 2 (get deputies)
+    # chamber = 3 (get all members)
+    chamber = req.params.get("chamber")
 
     # set default values for parameters
     if not legislature:
@@ -24,22 +24,22 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         chamber = "3"
 
     chamber_dict = {
-        "1": ("get senators", ["1"]),
-        "2": ("get deputies", ["2"]),
-        "3": ("get all members", ["1", "2"]),
+        "1": ("senators", [1]),
+        "2": ("deputies", [2]),
+        "3": ("all members", [1, 2]),
     }
 
     result_list = []
 
     try:
-        chamber_set = chamber_dict[chamber]   
+        chamber_set = chamber_dict[chamber]
     except KeyError:
         # handle wrong chamber exception
         return func.HttpResponse(
-            "cham (chamber) can only be 1, 2 or 3",
-            status_code=406
-        )       
-    
+            "Parameter 'chamber' can only be 1 (senators), 2 (deputies) or 3 (all members)",  # noqa: E501
+            status_code=406,
+        )
+
     for chamber in chamber_set[1]:
         link = "http://www.cdep.ro/pls/parlam/structura2015.de?leg={}&cam={}".format(
             legislature, chamber
@@ -49,9 +49,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         # handle wrong legislature value
         if req.status_code == 404:
             return func.HttpResponse(
-                "please enter a correct year value for leg (legislature)",
-                status_code=406
-            )                  
+                "Please enter a correct year value for parameter 'legislature'",
+                status_code=406,
+            )
 
         # get the right encoding
         http_encoding = (
@@ -63,31 +63,43 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             req.content, is_html=True
         )
         encoding = html_encoding or http_encoding
-        
+
         soup = BeautifulSoup(req.content, "lxml", from_encoding=encoding)
         rows = soup.find("tbody").findAll("tr")
         for row in rows:
-            to_append = {}
-            entries = row.findAll("a")
-            to_append["name"] = entries[0].text
-            try:
-                to_append["party"] = entries[2].text
-                to_append["location"] = entries[1].text.split("/")[1].strip()
-            except IndexError:
-                to_append["party"] = entries[1].text
-            to_append["legislature"] = legislature
-            if chamber == "1":
-                to_append["chamber"] = "senat"
-            else:
-                to_append["chamber"] = "cdep"
-            profile_url = "http://www.cdep.ro" + entries[0]["href"]
-            member_id = profile_url.split("idm=")[1].split("&")[0]
-            to_append["id"] = member_id
-            to_append["link"] = profile_url
-            result_list.append(to_append)
+            result_list.append(
+                getResult(row, chamber),
+            )
         final_dict = {
-            "action": chamber_set[0],
-            "legislature": legislature,
+            "legislature": int(legislature),
+            "profileUrl": "http://www.cdep.ro/pls/parlam/structura2015.mp"
+            + "?idm=:id&cam=:chamber&leg={leg}".format(leg=legislature),
             "results": result_list,
         }
     return func.HttpResponse(json.dumps(final_dict), mimetype="application/json")
+
+
+def getResult(row, chamber):
+    to_append = {}
+
+    entries = row.findAll("a")
+
+    to_append["name"] = entries[0].text
+
+    try:
+        to_append["party"] = entries[2].text
+        to_append["district"] = entries[1].text.split("/")[1].strip()
+    except IndexError:
+        to_append["party"] = entries[1].text
+
+    to_append["chamber"] = chamber
+
+    profile_url = entries[0]["href"]
+    member_id = profile_url.split("idm=")[1].split("&")[0]
+
+    try:
+        to_append["id"] = int(member_id)
+    except ValueError:
+        to_append["id"] = member_id
+
+    return to_append
