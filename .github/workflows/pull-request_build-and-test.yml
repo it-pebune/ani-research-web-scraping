@@ -30,7 +30,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.x"
+          python-version: "3.9"
 
       - name: Install Azure Functions Core Tools
         run: npm install -g azure-functions-core-tools@4 --unsafe-perm true
@@ -51,4 +51,4 @@ jobs:
       - name: Run Postman collection
         run: |
           curl -I http://127.0.0.1:7071
-          newman run "Web Scraping API.postman_collection.json" -e "Web Scraping API.postman_environment.json" --verbose
+          newman run "Web Scraping API.postman_collection.json" -e "Web Scraping API.postman_environment.json"
