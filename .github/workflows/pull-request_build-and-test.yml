@@ -7,23 +7,56 @@ on:
       - main
 
 jobs:
-  build_and_test:
+  build:
     runs-on: ubuntu-latest
-    name: Build and Test Job
     steps:
       - uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+
       - name: Run formatter
         uses: psf/black@stable
         with:
           options: "--check --verbose"
           src: "."
+
       - name: Run linter
         uses: py-actions/flake8@v2
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+
+      - name: Install Azure Functions Core Tools
+        run: npm install -g azure-functions-core-tools@4 --unsafe-perm true
+
+      - name: Install Newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+
+      - name: Run Azure Function App
+        run: |
+          pip install -r requirements.txt
+          func host start
+          sleep 5
+
+      - name: Run Postman collection
+        run: |
+          mkdir -p testResults
+          newman run "Web Scraping API.postman_collection.json" -e "Web Scraping API.postman_environment.json" -r htmlextra --reporter-htmlextra-export ./testResults/testReport.html
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: TestReports
+          path: testResults
