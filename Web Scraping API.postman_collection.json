@@ -9,7 +9,7 @@
 			"name": "Parliament",
 			"item": [
 				{
-					"name": "Members",
+					"name": "Members (current)",
 					"event": [
 						{
 							"listen": "test",
@@ -20,8 +20,9 @@
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
 									"    ",
-									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": \\\"senat\\\"\");",
-									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": \\\"cdep\\\"\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"legislature\\\": 2020\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": 1\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": 2\");",
 									"});",
 									""
 								],
@@ -45,19 +46,20 @@
 					"response": []
 				},
 				{
-					"name": "Deputies",
+					"name": "Members (previous)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Get all deputies\", function() {",
+									"pm.test(\"Get all members of the parliament\", function() {",
 									"    pm.response.to.be.ok;",
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
-									"",
-									"    pm.expect(pm.response.text()).to.not.include(\"\\\"chamber\\\": \\\"senat\\\"\");",
-									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": \\\"cdep\\\"\");",
+									"    ",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"legislature\\\": 2016\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": 1\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": 2\");",
 									"});",
 									""
 								],
@@ -69,7 +71,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/mps?cham=2",
+							"raw": "{{base_url}}/mps?legislature=2016",
 							"host": [
 								"{{base_url}}"
 							],
@@ -78,8 +80,8 @@
 							],
 							"query": [
 								{
-									"key": "cham",
-									"value": "2"
+									"key": "legislature",
+									"value": "2016"
 								}
 							]
 						}
@@ -98,8 +100,8 @@
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
 									"",
-									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": \\\"senat\\\"\");",
-									"    pm.expect(pm.response.text()).to.not.include(\"\\\"chamber\\\": \\\"cdep\\\"\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": 1\");",
+									"    pm.expect(pm.response.text()).to.not.include(\"\\\"chamber\\\": 2\");",
 									"});",
 									""
 								],
@@ -111,7 +113,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/mps?cham=1",
+							"raw": "{{base_url}}/mps?chamber=1",
 							"host": [
 								"{{base_url}}"
 							],
@@ -120,8 +122,50 @@
 							],
 							"query": [
 								{
-									"key": "cham",
+									"key": "chamber",
 									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deputies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get all deputies\", function() {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"",
+									"    pm.expect(pm.response.text()).to.not.include(\"\\\"chamber\\\": 1\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": 2\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/mps?chamber=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mps"
+							],
+							"query": [
+								{
+									"key": "chamber",
+									"value": "2"
 								}
 							]
 						}
@@ -195,6 +239,8 @@
 									"    pm.response.to.be.json;",
 									"",
 									"    pm.expect(pm.response.text()).to.include(\"\\\"name\\\": \\\"HALICI I NICUSOR\\\"\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"type\\\": \\\"A\\\"\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"type\\\": \\\"I\\\"\");",
 									"});",
 									""
 								],

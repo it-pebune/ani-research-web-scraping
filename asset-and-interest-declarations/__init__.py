@@ -81,12 +81,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         # if no results, return error message
         no_results = soup.find("h5", text="Nu s-au găsit rezultate")
         if no_results:
-            return func.HttpResponse("No results found", status_code=406)
+            return func.HttpResponse("No results found", status_code=204)
 
         # if too many results, return error message
         too_many_results = soup.find("span", attrs={"id": "_t133"})
         if too_many_results:
-            return func.HttpResponse("More than 10 000 results found", status_code=406)
+            return func.HttpResponse("More than 10 000 results found", status_code=413)
 
         # Prepare POST data for looping through results page
         data["form:resultsTable"] = "form:resultsTable"
@@ -116,8 +116,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             for tr in trs:
                 tds = tr.findAll("td")
                 url = tds[7].a["href"].replace(" ", "%20")
-                id = url.split("uniqueIdentifier=")[1]
-                full_url = "http://declaratii.integritate.eu" + url
+                file_name = url.split("fileName=")[1].split("&")[0]
+                uid = url.split("uniqueIdentifier=")[1]
                 to_append = {}
                 for idx, val in enumerate(
                     [
@@ -127,20 +127,33 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                         "locality",
                         "county",
                         "date",
-                        "declaration",
+                        "type",
                     ]
                 ):
-                    to_append[val] = tds[idx].text
-                to_append["link"] = full_url
-                to_append["uniqueIdentifier"] = id
+                    to_append[val] = getValue(tds, idx)
+                to_append["filename"] = file_name
+                to_append["uid"] = uid
                 result_list.append(to_append)
                 added += 1
             page += 1
             time.sleep(1)
-        return func.HttpResponse(json.dumps(result_list), mimetype="application/json")
+        final_dict = {
+            "downloadUrl": "http://declaratii.integritate.eu/DownloadServlet"
+            + "?fileName=:filename&uniqueIdentifier=:uid",
+            "results": result_list,
+        }
+        return func.HttpResponse(json.dumps(final_dict), mimetype="application/json")
     else:
         return func.HttpResponse(
-            "Please enter a value for 'name' (last name and first name) parameter, "
-            + "e.g. lastname_firstname=Ionescu Marian",
+            "Please enter a value for parameter 'name' (last name and first name), "
+            + "e.g. name=Ionescu Marian",
             status_code=406,
         )
+
+
+def getValue(tds, idx):
+    if tds[idx].text == "Declaratie de avere":
+        return "A"  # Declaratie de avere
+    if tds[idx].text == "Declaratie de interese":
+        return "I"  # Declaratie de interese
+    return tds[idx].text
