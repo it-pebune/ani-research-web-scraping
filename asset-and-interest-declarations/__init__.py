@@ -43,7 +43,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         )
         icewindow = rsoup.find("input", attrs={"name": "ice.window"}).get("value")
         iceview = rsoup.find("input", attrs={"name": "ice.view"}).get("value")
-        
+
         # prepare POST data
         data = {
             "form": "form",
@@ -79,20 +79,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         soup = BeautifulSoup(resp.content, "lxml")
 
         # if no results, return error message
-        no_results = soup.find("h5", text = "Nu s-au găsit rezultate")
+        no_results = soup.find("h5", text="Nu s-au găsit rezultate")
         if no_results:
-            return func.HttpResponse(
-                "No results found",
-                status_code=406
-            )
-        
+            return func.HttpResponse("No results found", status_code=406)
+
         # if too many results, return error message
-        too_many_results = soup.find("span", attrs = {"id": "_t133"})
+        too_many_results = soup.find("span", attrs={"id": "_t133"})
         if too_many_results:
-            return func.HttpResponse(
-                "More than 10 000 results found",
-                status_code=406
-            )
+            return func.HttpResponse("More than 10 000 results found", status_code=406)
 
         # Prepare POST data for looping through results page
         data["form:resultsTable"] = "form:resultsTable"
