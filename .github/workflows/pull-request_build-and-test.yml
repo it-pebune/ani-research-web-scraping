@@ -48,9 +48,14 @@ jobs:
         run: func host start &
 
       - name: Install Newman
-        run: npm install -g newman
+        run: npm install -g newman newman-reporter-htmlextra
 
       - name: Run Postman collection
         run: |
           curl -I http://127.0.0.1:7071
-          newman run Web_Scraping_API.postman_collection.json -e Web_Scraping_API.postman_environment.json
+          newman run Web_Scraping_API.postman_collection.json -e Web_Scraping_API.postman_environment.json -r htmlextra
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: TestReport
+          path: newman
