@@ -30,7 +30,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.x"
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
@@ -47,6 +47,7 @@ jobs:
 
       - name: Run Azure Function App
         run: |
+          python3 -m venv .venv
           .venv/bin/python -m pip install -r requirements.txt
           .venv\Scripts\activate
           func host start
