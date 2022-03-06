@@ -49,12 +49,12 @@ jobs:
         run: |
           pip install -r requirements.txt
           func host start &
-          sleep 5
+          wait
 
       - name: Run Postman collection
         run: |
           mkdir -p testResults
-          newman run "Web Scraping API.postman_collection.json" -e "Web Scraping API.postman_environment.json" -r htmlextra --reporter-htmlextra-export ./testResults/testReport.html
+          newman run "Web Scraping API.postman_collection.json" -e "Web Scraping API.postman_environment.json" -r htmlextra --reporter-htmlextra-export ./testResults/testReport.html --verbose
 
       - uses: actions/upload-artifact@v3
         with:
