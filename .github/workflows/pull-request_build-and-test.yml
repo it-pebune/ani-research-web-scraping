@@ -27,36 +27,28 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: "3.x"
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: "14.x"
-
       - name: Install Azure Functions Core Tools
         run: npm install -g azure-functions-core-tools@4 --unsafe-perm true
-
-      - name: Install Newman
-        run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
 
       - name: Run Azure Function App
         run: |
           pip install -r requirements.txt
           func host start &
-          sleep 5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+
+      - name: Install Newman
+        run: npm install -g newman
 
       - name: Run Postman collection
         run: |
-          mkdir -p testResults
-          newman run "Web Scraping API.postman_collection.json" -e "Web Scraping API.postman_environment.json" -r htmlextra --reporter-htmlextra-export ./testResults/testReport.html --verbose
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: TestReports
-          path: testResults
+          curl http://127.0.0.1:7071
+          newman run "Web Scraping API.postman_collection.json" -e "Web Scraping API.postman_environment.json"
