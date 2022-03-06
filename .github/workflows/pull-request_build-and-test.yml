@@ -50,5 +50,5 @@ jobs:
 
       - name: Run Postman collection
         run: |
-          curl http://127.0.0.1:7071
+          curl -I http://127.0.0.1:7071
           newman run "Web Scraping API.postman_collection.json" -e "Web Scraping API.postman_environment.json"
