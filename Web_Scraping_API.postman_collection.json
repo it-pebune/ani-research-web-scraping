@@ -20,7 +20,7 @@
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
 									"    ",
-									"    pm.expect(pm.response.text()).to.include(\"\\\"legislature\\\": 2020\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"legislature\\\": 2022\");",
 									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": 1\");",
 									"    pm.expect(pm.response.text()).to.include(\"\\\"chamber\\\": 2\");",
 									"});",
