@@ -47,9 +47,9 @@ jobs:
 
       - name: Run Azure Function App
         run: |
-          pip install -r requirements.txt
+          .venv/bin/python -m pip install -r requirements.txt
+          .venv\Scripts\activate
           func host start
-          sleep 5
 
       - name: Run Postman collection
         run: |
