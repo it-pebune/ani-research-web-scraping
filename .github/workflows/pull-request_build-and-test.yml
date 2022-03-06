@@ -16,7 +16,6 @@ jobs:
         uses: psf/black@stable
         with:
           options: "--check --verbose"
-          src: "."
 
       - name: Run linter
         uses: py-actions/flake8@v2
@@ -30,20 +29,23 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
+          # Use Python 3.8, the same Python version used by the Azure Functions Core Tools,
+          # otherwise the Azure Function App will start with errors and its Functions will not run
           python-version: "3.8"
-
-      - name: Install Azure Functions Core Tools
-        run: npm install -g azure-functions-core-tools@4 --unsafe-perm true
-
-      - name: Run Azure Function App
-        run: |
-          pip install -r requirements.txt
-          func host start &
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: "14.x"
+
+      - name: Install Azure Functions Core Tools
+        run: npm install -g azure-functions-core-tools@4 --unsafe-perm true
+
+      - name: Install Azure Function App dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Azure Function App
+        run: func host start &
 
       - name: Install Newman
         run: npm install -g newman
