@@ -53,9 +53,9 @@ jobs:
       - name: Run Postman collection
         run: |
           curl -I http://127.0.0.1:7071
-          newman run Web_Scraping_API.postman_collection.json -e Web_Scraping_API.postman_environment.json -r htmlextra
+          newman run Web_Scraping_API.postman_collection.json -e Web_Scraping_API.postman_environment.json -r htmlextra --reporter-htmlextra-export TestReport.html
 
       - uses: actions/upload-artifact@v3
         with:
-          name: TestReport
-          path: newman
+          name: TestReport.html
+          path: TestReport.html
