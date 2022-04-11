@@ -108,7 +108,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         page = 1
 
         # looping thorugh result pages and appending data for each result
-        while added < results:
+        while added < results and page <= (results // 25) + 1:
             data["form:resultsTable_page"] = page
             resp = session.post(link, headers=headers, data=data)
             soup = BeautifulSoup(resp.content, "lxml")
@@ -142,6 +142,17 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             + "?fileName=:filename&uniqueIdentifier=:uid",
             "results": result_list,
         }
+        if added != results:
+            error_dict = {
+                "error": "Failed to parse all results, only parsed {} of {}".format(
+                    added, results
+                )
+            }
+            error_dict.update(final_dict)
+            final_dict = error_dict
+            return func.HttpResponse(
+                json.dumps(final_dict), mimetype="application/json", status_code=500
+            )
         return func.HttpResponse(json.dumps(final_dict), mimetype="application/json")
     else:
         return func.HttpResponse(
