@@ -1,4 +1,5 @@
-name: Test
+# Reusable workflow
+name: Test (reusable workflow)
 
 on:
   workflow_call:
