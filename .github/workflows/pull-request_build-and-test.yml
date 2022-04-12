@@ -21,4 +21,5 @@ jobs:
         uses: py-actions/flake8@v2
 
   test:
+    needs: build
     uses: ./.github/workflows/test.yml
