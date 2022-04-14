@@ -14,6 +14,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     lastname_firstname = req.params.get("name")
 
     if lastname_firstname:
+        # replace dash with space
+        lastname_firstname = lastname_firstname.replace("-"," ")
         result_list = []
 
         headers = {
