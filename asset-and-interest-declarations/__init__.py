@@ -108,12 +108,20 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         results = int(soup.find("span", id="form:_t90").text)
         added = 0
         page = 1
+        
+        # assuming there are multiple result pages
+        multiple_result_pages = True
 
-        # looping thorugh result pages and appending data for each result
-        while added < results:
-            data["form:resultsTable_page"] = page
-            resp = session.post(link, headers=headers, data=data)
-            soup = BeautifulSoup(resp.content, "lxml")
+        # looping through result pages and appending data for each result
+        while added < results and multiple_result_pages:
+            # if only one page, than use the initial fetched page
+            if results <= 25:
+                multiple_result_pages = False
+            # if multiple pages, fetch each
+            else:
+                data["form:resultsTable_page"] = page
+                resp = session.post(link, headers=headers, data=data)
+                soup = BeautifulSoup(resp.content, "lxml")
             trs = soup.findAll("tr", {"tabindex": True})
             for tr in trs:
                 tds = tr.findAll("td")
