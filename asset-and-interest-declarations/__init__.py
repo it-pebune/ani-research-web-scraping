@@ -15,7 +15,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     if lastname_firstname:
         # replace dash with space
-        lastname_firstname = lastname_firstname.replace("-"," ")
+        lastname_firstname = lastname_firstname.replace("-", " ")
         result_list = []
 
         headers = {
@@ -108,7 +108,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         results = int(soup.find("span", id="form:_t90").text)
         added = 0
         page = 1
-        
+
         # assuming there are multiple result pages
         multiple_result_pages = True
 
