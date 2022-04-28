@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4d59dd9b-b9da-4d5a-a8f9-6d782907469a",
+		"_postman_id": "e088104d-f861-4190-b7fd-c7c9f2d187b4",
 		"name": "WebScraping",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -238,7 +238,7 @@
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
 									"",
-									"    pm.expect(pm.response.text()).to.include(\"\\\"name\\\": \\\"HALICI I NICUSOR\\\"\");",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"name\\\": \\\"CAUS VASILE AUREL\\\"\");",
 									"    pm.expect(pm.response.text()).to.include(\"\\\"type\\\": \\\"A\\\"\");",
 									"    pm.expect(pm.response.text()).to.include(\"\\\"type\\\": \\\"I\\\"\");",
 									"});",
@@ -252,7 +252,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/decls?name=Halici Nicusor",
+							"raw": "{{base_url}}/decls?name=Caus Vasile-Aurel",
 							"host": [
 								"{{base_url}}"
 							],
@@ -262,7 +262,7 @@
 							"query": [
 								{
 									"key": "name",
-									"value": "Halici Nicusor"
+									"value": "Caus Vasile-Aurel"
 								}
 							]
 						}
