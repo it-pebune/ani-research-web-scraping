@@ -14,6 +14,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     lastname_firstname = req.params.get("name")
 
     if lastname_firstname:
+        # replace dash with space
+        lastname_firstname = lastname_firstname.replace("-", " ")
         result_list = []
 
         headers = {
@@ -107,11 +109,19 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         added = 0
         page = 1
 
-        # looping thorugh result pages and appending data for each result
-        while added < results:
-            data["form:resultsTable_page"] = page
-            resp = session.post(link, headers=headers, data=data)
-            soup = BeautifulSoup(resp.content, "lxml")
+        # assuming there are multiple result pages
+        multiple_result_pages = True
+
+        # looping through result pages and appending data for each result
+        while added < results and multiple_result_pages:
+            # if only one page, than use the initial fetched page
+            if results <= 25:
+                multiple_result_pages = False
+            # if multiple pages, fetch each
+            else:
+                data["form:resultsTable_page"] = page
+                resp = session.post(link, headers=headers, data=data)
+                soup = BeautifulSoup(resp.content, "lxml")
             trs = soup.findAll("tr", {"tabindex": True})
             for tr in trs:
                 tds = tr.findAll("td")
