@@ -15,7 +15,7 @@ jobs:
         with:
           # Use Python 3.8, the same Python version used by the Azure Functions Core Tools,
           # otherwise the Azure Function App will start with errors and its Functions will not run
-          python-version: "3.8"
+          python-version: "3.9"
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
