@@ -105,7 +105,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         del data["javax.faces.behavior.event"]
         del data["javax.faces.partial.event"]
 
-        results = int(soup.find("span", id="form:_t91").text)
+        results = int(soup.find("span", id="form:_t87").text)
         added = 0
         page = 1
 
