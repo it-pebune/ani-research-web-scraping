@@ -1,4 +1,4 @@
-pre-commit==2.19.0
+pre-commit==2.20.0
 filelock==3.7.1
-identify==2.5.1
+identify==2.5.2
 platformdirs==2.5.2
