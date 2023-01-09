@@ -41,8 +41,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         )
 
     for chamber in chamber_set[1]:
-        link = "http://www.cdep.ro/pls/parlam/structura2015.de?leg={}&cam={}&par=V".format(
-            legislature, chamber
+        link = (
+            "http://www.cdep.ro/pls/parlam/structura2015.de?leg={}&cam={}&par=V".format(
+                legislature, chamber
+            )
         )
         req = requests.get(link)
 
@@ -85,7 +87,7 @@ def getResult(row, chamber):
     entries = row.findAll("a")
 
     to_append["name"] = entries[0].text
-    to_append['birth'] = row.findAll("td")[2].text
+    to_append["birth"] = row.findAll("td")[2].text
 
     try:
         to_append["party"] = entries[2].text
